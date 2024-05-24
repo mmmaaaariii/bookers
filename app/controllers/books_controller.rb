@@ -38,15 +38,22 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to book_path(@book.id)
     else
-      @book = Book.find(params[:id])
+      @errors = @book.errors.full_messages
       render :edit
     end
   end
   
   def destroy
-    book = Book.find(params[:id])
-    book.destroy
-    redirect_to books_path
+    # book = Book.find(params[:id])
+    # book.destroy
+    # redirect_to books_path
+    @book = Book.find(params[:id])
+    if @book.destroy
+      redirect_to index
+    else
+      @books = Book.all
+      render :index
+    end
   end
   
   private
